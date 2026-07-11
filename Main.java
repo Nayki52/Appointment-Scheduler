@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -43,6 +44,13 @@ public static void removeAppointment() {
     }
     else {
         System.out.println("Error: Invalid idex! There is no appointment whith this index.");
+    }
+}
+public static void showAppointmentByDate(LocalDate date) {
+    for (int i = 0; i < appointment.size(); i++) {
+        if (appointment.get(i).getDate().equals(date)) {
+            appointment.get(i).showInfo();
+        }
     }
 }
 
