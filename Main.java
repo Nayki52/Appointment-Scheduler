@@ -8,9 +8,13 @@ public class Main {
     public static ArrayList<Appointment> appointment = new ArrayList<Appointment>();
     public static Scanner sc = new Scanner(System.in);
 
-
 public static void addAppointment() {
-
+    System.out.println("Enter the id : ");
+    int id = sc.nextInt();
+    System.out.println("Enter the title : ");
+    String title = sc.nextLine();
+    System.out.println("Enter the description : ");
+    String description = sc.nextLine();
 }
 public static void showAppointment() {
     for(int i = 0; i < appointment.size(); i++) {
