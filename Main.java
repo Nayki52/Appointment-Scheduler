@@ -1,4 +1,6 @@
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,11 +13,69 @@ public class Main {
 public static void addAppointment() {
     System.out.println("Enter the id : ");
     int id = sc.nextInt();
+
     System.out.println("Enter the title : ");
     String title = sc.nextLine();
+
     System.out.println("Enter the description : ");
     String description = sc.nextLine();
+
+    LocalDate date = readFutureDate("Enter date in format yyyy-MM-dd : ");
+    LocalTime startTime = readTime("Enter start time HH:mm : ");
+    LocalTime endTime = readEndTime("Enter end time HH:mm", startTime);
+
 }
+
+public static LocalDate readFutureDate(String message) {
+    while (true) {
+        LocalDate date = readDate(message);
+
+        if (!date.isBefore(LocalDate.now())) {
+            return date;
+        }
+
+        System.out.println("Appointment date cannot be in the past");
+    }
+}
+
+public static LocalDate readDate(String message) {
+    while (true) {
+        System.out.println(message);
+        String input = sc.nextLine();
+
+        try {
+            return LocalDate.parse(input);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Use yyyy-MM-dd.");
+        }
+    }
+}
+
+public static LocalTime readTime(String message) {
+    while (true) {
+        System.out.println(message);
+        String input = sc.nextLine();
+
+        try {
+            return LocalTime.parse(input);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid time format. Use HH:mm.");
+        }
+    }
+}
+
+public static LocalTime readEndTime(String message, LocalTime startTime) {
+    while (true) {
+        LocalTime endTime = readTime(message);
+
+        if (endTime.isAfter(startTime) ) {
+            return endTime;
+        }
+
+        System.out.println("End time must be after start time");
+    }
+}
+
 public static void showAppointment() {
     for(int i = 0; i < appointment.size(); i++) {
         System.out.println("index :" + i);
