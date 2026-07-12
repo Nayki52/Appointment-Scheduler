@@ -11,20 +11,26 @@ public class Main {
     public static Scanner sc = new Scanner(System.in);
 
 public static void addAppointment() {
-    System.out.println("Enter the id : ");
+    System.out.print("Enter the id : ");
     int id = sc.nextInt();
-
-    System.out.println("Enter the title : ");
+    sc.nextLine();
+    System.out.print("Enter the title : ");
     String title = sc.nextLine();
 
-    System.out.println("Enter the description : ");
+    System.out.print("Enter the description : ");
     String description = sc.nextLine();
 
     LocalDate date = readFutureDate("Enter date in format yyyy-MM-dd : ");
     LocalTime startTime = readTime("Enter start time HH:mm : ");
     LocalTime endTime = readEndTime("Enter end time HH:mm", startTime);
+    System.out.print("Enter the location");
+    String location = sc.nextLine();
 
+    Appointment a = new Appointment(id, title, description, date, startTime, endTime, location);
+    appointment.add(a);
+    System.out.print("Appointment added sucesfuly!");
 }
+
 
 public static LocalDate readFutureDate(String message) {
     while (true) {
@@ -34,13 +40,13 @@ public static LocalDate readFutureDate(String message) {
             return date;
         }
 
-        System.out.println("Appointment date cannot be in the past");
+        System.out.print("Appointment date cannot be in the past");
     }
 }
 
 public static LocalDate readDate(String message) {
     while (true) {
-        System.out.println(message);
+        System.out.print(message);
         String input = sc.nextLine();
 
         try {
@@ -53,13 +59,13 @@ public static LocalDate readDate(String message) {
 
 public static LocalTime readTime(String message) {
     while (true) {
-        System.out.println(message);
+        System.out.print(message);
         String input = sc.nextLine();
 
         try {
             return LocalTime.parse(input);
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid time format. Use HH:mm.");
+            System.out.print("Invalid time format. Use HH:mm.");
         }
     }
 }
@@ -72,7 +78,7 @@ public static LocalTime readEndTime(String message, LocalTime startTime) {
             return endTime;
         }
 
-        System.out.println("End time must be after start time");
+        System.out.print("End time must be after start time");
     }
 }
 
@@ -131,27 +137,32 @@ public static void ShowMenu() {
 public static void main(String [] args) {
     while(true) {
         ShowMenu();
+        System.out.print("Your choise");
         int choise = sc.nextInt();
         if(choise == 1) {
-
+            addAppointment();
         }
         else if(choise == 2) {
-            
+            showAppointment();
         }
         else if(choise == 3) {
-            
+            System.out.println("Enter id for the appointment you want to see");
+            int id = sc.nextInt();
+            showAppointmenByID(id);
         }
         else if(choise == 4) {
             
         }
         else if(choise == 5) {
-            
+            removeAppointment();
         }
         else if(choise == 6) {
-            
+            LocalDate date = readDate("Enter the date yyyy-MM-dd");
+            showAppointmentByDate(date);
         }
         else if(choise == 7) {
-            
+            System.out.println("Thanks for using our app");
+            break;
         }
         else {
             System.out.println("Invalid option. Choose a number from 1 to 7!");
