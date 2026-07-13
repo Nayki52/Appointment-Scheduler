@@ -3,12 +3,66 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
+//подключаем файл чтоби работать с фалом
+import java.io.File;
+// подключаем чтоби записивать фаил
+import java.io.FileWriter;
+// ловить ошибки при сохранении
+import java.io.IOException;
 
 
 public class Main {
 
     public static ArrayList<Appointment> appointment = new ArrayList<Appointment>();
     public static Scanner sc = new Scanner(System.in);
+    public static String fileName = "Appointments.txt";
+
+    public static void saveAppointment() {
+        try {
+            FileWriter writer = new FileWriter(fileName);
+
+            for (int i = 0; i < appointment.size(); i++) {
+                Appointment s = appointment.get(i);
+                writer.write(s.getId() + ";" + s.getTitle() + ";" + s.getDescription() + ";" + s.getDate() + ";" + s.getStartTime() + ";" + s.getEndTime() + ";"  + s.getLocation() + "\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error while saving spendings");
+        }
+    }
+
+    public static void loadAppoinmtents(){
+        try {
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                return;
+            }
+            else { 
+                Scanner fileScanner = new Scanner(file);
+                while(fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine();
+                    String[] parts = line.split(";");
+
+                    if(parts.length == 7) {
+                        int id = java.lang.Integer.parseInt(parts[0]);
+                        String title = parts[1];
+                        String description = parts[2];
+                        LocalDate date = LocalDate.parse(parts[3]);
+                        LocalTime startTime = LocalTime.parse(parts[4]);
+                        LocalTime endTime = LocalTime.parse(parts[5]);
+                        String location = parts[6];
+                        Appointment s = new Appointment(id, title, description, date, startTime , endTime, location);
+                        appointment.add(s);
+                    }
+                    }
+            }
+        } catch (Exception e) {
+        System.out.println("Error while loading spendings ");
+        }
+    }
+
 
 public static void addAppointment() {
     System.out.print("Enter the id : ");
@@ -22,8 +76,8 @@ public static void addAppointment() {
 
     LocalDate date = readFutureDate("Enter date in format yyyy-MM-dd : ");
     LocalTime startTime = readTime("Enter start time HH:mm : ");
-    LocalTime endTime = readEndTime("Enter end time HH:mm", startTime);
-    System.out.print("Enter the location");
+    LocalTime endTime = readEndTime("Enter end time HH:mm : ", startTime);
+    System.out.print("Enter the location : ");
     String location = sc.nextLine();
 
     Appointment a = new Appointment(id, title, description, date, startTime, endTime, location);
@@ -97,6 +151,38 @@ public static void showAppointmenByID(int id) {
         }
     }
 }
+public static void UppdateAppointment() {
+    System.out.println("Enter the ID of the Appointment to update : ");
+    int id = sc.nextInt();
+    sc.nextLine();
+
+
+    for (int i = 0 ; i < appointment.size(); i ++) {
+        if(appointment.get(i).getId() == id) {
+            System.out.println("Enter new title : ");
+            appointment.get(i).setTitle(sc.nextLine());
+                        System.out.print("Enter new description: ");
+            appointment.get(i).setDescription(sc.nextLine());
+
+            LocalDate date = readFutureDate("Enter new date (yyyy-MM-dd): ");
+            appointment.get(i).setDate(date);
+
+            LocalTime startTime = readTime("Enter new start time (HH:mm): ");
+            appointment.get(i).setStartTime(startTime);
+
+            LocalTime endTime = readEndTime("Enter new end time (HH:mm): ", startTime);
+            appointment.get(i).setEndTime(endTime);
+
+            System.out.print("Enter new location: ");
+            appointment.get(i).setLocation(sc.nextLine());
+
+            System.out.println("Appointment updated successfully!");
+            return;
+        }
+    }
+
+    System.out.println("Appointment not found.");
+}
 public static void removeAppointment() {
     if (appointment.isEmpty()) {
         System.out.println("The list is empty. Nothing to remove."); 
@@ -137,7 +223,7 @@ public static void ShowMenu() {
 public static void main(String [] args) {
     while(true) {
         ShowMenu();
-        System.out.print("Your choise");
+        System.out.print("Your choise : ");
         int choise = sc.nextInt();
         if(choise == 1) {
             addAppointment();
@@ -146,7 +232,7 @@ public static void main(String [] args) {
             showAppointment();
         }
         else if(choise == 3) {
-            System.out.println("Enter id for the appointment you want to see");
+            System.out.println("Enter id for the appointment you want to see : ");
             int id = sc.nextInt();
             showAppointmenByID(id);
         }
@@ -157,11 +243,11 @@ public static void main(String [] args) {
             removeAppointment();
         }
         else if(choise == 6) {
-            LocalDate date = readDate("Enter the date yyyy-MM-dd");
+            LocalDate date = readDate("Enter the date yyyy-MM-dd : ");
             showAppointmentByDate(date);
         }
         else if(choise == 7) {
-            System.out.println("Thanks for using our app");
+            System.out.println("Thanks for using our app : ");
             break;
         }
         else {
