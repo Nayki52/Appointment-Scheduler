@@ -83,6 +83,7 @@ public static void addAppointment() {
     Appointment a = new Appointment(id, title, description, date, startTime, endTime, location);
     appointment.add(a);
     System.out.print("Appointment added sucesfuly!");
+    saveAppointment();
 }
 
 
@@ -152,16 +153,17 @@ public static void showAppointmenByID(int id) {
     }
 }
 public static void UppdateAppointment() {
-    System.out.println("Enter the ID of the Appointment to update : ");
+    System.out.print("Enter the ID of the Appointment to update : ");
     int id = sc.nextInt();
     sc.nextLine();
 
 
     for (int i = 0 ; i < appointment.size(); i ++) {
         if(appointment.get(i).getId() == id) {
-            System.out.println("Enter new title : ");
+            System.out.print("Enter new title : ");
             appointment.get(i).setTitle(sc.nextLine());
-                        System.out.print("Enter new description: ");
+                        
+            System.out.print("Enter new description: ");
             appointment.get(i).setDescription(sc.nextLine());
 
             LocalDate date = readFutureDate("Enter new date (yyyy-MM-dd): ");
@@ -176,9 +178,10 @@ public static void UppdateAppointment() {
             System.out.print("Enter new location: ");
             appointment.get(i).setLocation(sc.nextLine());
 
-            System.out.println("Appointment updated successfully!");
+            System.out.print("Appointment updated successfully!");
             return;
         }
+        saveAppointment();
     }
 
     System.out.println("Appointment not found.");
@@ -201,6 +204,7 @@ public static void removeAppointment() {
     else {
         System.out.println("Error: Invalid idex! There is no appointment whith this index.");
     }
+    saveAppointment();
 }
 public static void showAppointmentByDate(LocalDate date) {
     for (int i = 0; i < appointment.size(); i++) {
@@ -221,6 +225,7 @@ public static void ShowMenu() {
 }
 
 public static void main(String [] args) {
+    loadAppoinmtents();
     while(true) {
         ShowMenu();
         System.out.print("Your choise : ");
@@ -237,7 +242,8 @@ public static void main(String [] args) {
             showAppointmenByID(id);
         }
         else if(choise == 4) {
-            
+
+            UppdateAppointment();
         }
         else if(choise == 5) {
             removeAppointment();
