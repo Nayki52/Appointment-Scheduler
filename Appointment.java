@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
 class Appointment {
 
     private int id;
@@ -12,10 +11,9 @@ class Appointment {
     private LocalTime endTime;
     private String location;
 
-
-
-    public Appointment(int id, String title, String description, LocalDate date, LocalTime starTime, LocalTime endTime, String location) {
-        this.id =  id;
+    public Appointment(int id, String title, String description, LocalDate date, LocalTime starTime, LocalTime endTime,
+            String location) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
@@ -28,11 +26,11 @@ class Appointment {
         return id;
     }
 
-    void setId (int id) {
+    void setId(int id) {
         this.id = id;
     }
-    
-     public String getTitle() {
+
+    public String getTitle() {
         return title;
     }
 
@@ -86,12 +84,18 @@ class Appointment {
     }
 
     public void showInfo() {
-    System.out.println("Appointment ID: " + id);
-    System.out.println("Title: " + title);
-    System.out.println("Description: " + description);
-    System.out.println("Date: " + date);
-    System.out.println("Start Time: " + startTime);
-    System.out.println("End Time: " + endTime);
-    System.out.println("Location: " + location);
+        System.out.println("Appointment ID: " + id);
+        System.out.println("Title: " + title);
+        System.out.println("Description: " + description);
+        System.out.println("Date: " + date);
+        System.out.println("Start Time: " + startTime);
+        System.out.println("End Time: " + endTime);
+        System.out.println("Location: " + location);
+    }
+
+    @Override
+    public String toString() {
+
+        return id + ";" + title + ";" + description + ";" + date + ";" + startTime + ";" + endTime + ";" + location;
     }
 }

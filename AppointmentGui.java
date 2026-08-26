@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.text.JTextComponent;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
