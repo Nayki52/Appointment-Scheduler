@@ -1,23 +1,3 @@
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.io.File;
-import java.io.FileWriter;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class AppointmentGui {
     public static ArrayList<Appointment> appointment = new ArrayList<Appointment>();
