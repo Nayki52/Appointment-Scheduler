@@ -1,13 +1,14 @@
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 
 import java.awt.BorderLayout;
@@ -34,16 +35,19 @@ public class AppointmentGui {
 
         frame.setLayout(new BorderLayout());
 
-        DefaultListModel<String> ListModel = new DefaultListModel<>();
+        String[] columns = { "ID", "Title", "Description", "Date", "Start Time", "End Time", "Location"
+        };
 
-        JList<String> allAppointmentsList = new JList<>(ListModel);
-        JPanel allAppointmentsPanel = new JPanel();
-        allAppointmentsPanel.setLayout(new BoxLayout(allAppointmentsPanel, BoxLayout.Y_AXIS));
-        JLabel allSpendingsLable = new JLabel("All Appointments", SwingConstants.CENTER);
-        JScrollPane horizontalPane = new JScrollPane(allAppointmentsList);
-        frame.add(allSpendingsLable, BorderLayout.NORTH);
-        allAppointmentsPanel.add(horizontalPane);
-        frame.add(allAppointmentsPanel, BorderLayout.CENTER);
+        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+
+        JTable appointmentsTable = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(appointmentsTable);
+
+        JLabel allAppointmentsLabel = new JLabel("All Appointments", SwingConstants.CENTER);
+
+        frame.add(allAppointmentsLabel, BorderLayout.NORTH);
+        frame.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel();
 
@@ -107,7 +111,15 @@ public class AppointmentGui {
                         Appointment newAppointment = new Appointment(id, title, description, date, startTime, endTime,
                                 location);
                         appointment.add(newAppointment);
-                        ListModel.addElement(newAppointment.toString());
+                        tableModel.addRow(new Object[] {
+                                newAppointment.getId(),
+                                newAppointment.getTitle(),
+                                newAppointment.getDescription(),
+                                newAppointment.getDate(),
+                                newAppointment.getStartTime(),
+                                newAppointment.getEndTime(),
+                                newAppointment.getLocation()
+                        });
 
                         addPanel.dispose();
                     }
@@ -149,7 +161,7 @@ public class AppointmentGui {
         });
         updateButton.addActionListener(event -> {
 
-            int selectedIndex = allAppointmentsList.getSelectedIndex();
+            int selectedIndex = appointmentsTable.getSelectedRow();
 
             if (selectedIndex == -1) {
                 JOptionPane.showMessageDialog(frame, "Please select an appointment to update", "No selection",
@@ -210,7 +222,13 @@ public class AppointmentGui {
                         selectedAppointment.setEndTime(endTime);
                         selectedAppointment.setLocation(location);
 
-                        ListModel.set(selectedIndex, selectedAppointment.toString());
+                        tableModel.setValueAt(selectedAppointment.getId(), selectedIndex, 0);
+                        tableModel.setValueAt(selectedAppointment.getTitle(), selectedIndex, 1);
+                        tableModel.setValueAt(selectedAppointment.getDescription(), selectedIndex, 2);
+                        tableModel.setValueAt(selectedAppointment.getDate(), selectedIndex, 3);
+                        tableModel.setValueAt(selectedAppointment.getStartTime(), selectedIndex, 4);
+                        tableModel.setValueAt(selectedAppointment.getEndTime(), selectedIndex, 5);
+                        tableModel.setValueAt(selectedAppointment.getLocation(), selectedIndex, 6);
 
                         updatePanel.dispose();
                     }
@@ -250,7 +268,7 @@ public class AppointmentGui {
         });
 
         removeButton.addActionListener(event -> {
-            int selectedIndex = allAppointmentsList.getSelectedIndex();
+            int selectedIndex = appointmentsTable.getSelectedRow();
             if (selectedIndex < 0 || selectedIndex >= appointment.size()) {
                 JOptionPane.showMessageDialog(frame, "Make a selction first", "Selection neccessary",
                         JOptionPane.WARNING_MESSAGE);
@@ -262,7 +280,7 @@ public class AppointmentGui {
                 // реакция на то, что пользователь выбрал в окне
                 if (result == JOptionPane.YES_OPTION) {
                     appointment.remove(selectedIndex);
-                    ListModel.remove(selectedIndex);
+                    tableModel.removeRow(selectedIndex);
                 }
             }
         });
@@ -291,8 +309,17 @@ public class AppointmentGui {
                             String location = parts[6];
 
                             Appointment s = new Appointment(id, title, description, date, startTime, endTime, location);
-                            ListModel.addElement(s.toString());
                             appointment.add(s);
+
+                            tableModel.addRow(new Object[] {
+                                    s.getId(),
+                                    s.getTitle(),
+                                    s.getDescription(),
+                                    s.getDate(),
+                                    s.getStartTime(),
+                                    s.getEndTime(),
+                                    s.getLocation()
+                            });
                         }
 
                     }
